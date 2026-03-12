@@ -8,3 +8,5 @@ programs = {
 }
 
 menu.menu(programs)
+
+print("done")
