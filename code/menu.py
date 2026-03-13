@@ -3,17 +3,23 @@ from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSenso
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait, StopWatch
+import celebrate
+
 
 import images, robot, cleanwheels, battery
 
-def menu(programs: dict[int, (DriveBase, Motor, Motor)]):
+def menu(programs):
+    menu2(programs)
+
+def menu2(programs: dict[int, object]):
     print("Creating hub")
     Robot = robot.Robot()
     hub = Robot.hub
 
     utilities = {
         0: cleanwheels.Run,
-        1: battery.Run
+        1: battery.Run,
+        2: celebrate.Run
     }
 
     # Since we use the center button, this sets the combo of the center and bluetooth button to stop the program
@@ -76,8 +82,8 @@ def menu(programs: dict[int, (DriveBase, Motor, Motor)]):
                 Robot.left_attachment.stop()
                 Robot.right_attachment.stop()
                 selection += 1
-                # if selection > len(programs) - 1 and not stopped:
-                #     celebrate.Run(br)
+                if selection > len(programs) - 1 and not stopped:
+                    celebrate.Run(Robot)
             hub.display.number(selection)
             hub.light.on(Color.GREEN)
             if Button.BLUETOOTH in pressed:
@@ -94,7 +100,7 @@ def menu(programs: dict[int, (DriveBase, Motor, Motor)]):
                 wait(200)
             if (option < 0):
                 option = len(utilities) - 1
-            if selection > len(utilities) - 1:
+            if option > len(utilities) - 1:
                 option = 0
             if Button.CENTER in pressed:
                 hub.light.on(Color.BLUE)
@@ -108,15 +114,18 @@ def menu(programs: dict[int, (DriveBase, Motor, Motor)]):
                     Robot.drive_base.stop()
                     Robot.left_attachment.stop()
                     Robot.right_attachment.stop()
-                    wait(500)
+                    wait(1000)
             hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
             Robot.drive_base.stop()
             Robot.left_attachment.stop()
             Robot.right_attachment.stop()
+            Robot.hub.speaker.beep(1,1)
             if option == 0:
                 hub.display.icon(images.CLEAN_WHEELS_1)
             if option == 1:
                 hub.display.icon(images.BATTERY)
+            if option == 2:
+                hub.display.icon(images.STAR)
             if Button.BLUETOOTH in pressed:
                 mode = 0
                 wait(500)

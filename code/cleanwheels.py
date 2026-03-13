@@ -15,7 +15,7 @@ def Run(robot: robot.Robot):
     robot.drive_base.use_gyro(False)
     robot.drive_base.settings(straight_speed=900)
     while True:
-        robot.drive_base.straight(20)
+        robot.drive_base.straight(3000)
 
 # This code allows this program to be run directly, without the main program
 if __name__ == "__main__":

@@ -2,6 +2,7 @@ from pybricks.tools import Matrix
 import robot
 import images
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
+from pybricks.tools import wait
 
 def Rescale(val, in_min, in_max, out_min, out_max):
     neg = val / abs(val)  # will either be 1 or -1
@@ -26,10 +27,11 @@ def RescaleBatteryVoltage(volts):
 
 
 def Run(robot: robot.Robot):
-    while not Button.CENTER in robot.hub.buttons.pressed():
-                v = robot.hub.battery.voltage()
-                vPct = RescaleBatteryVoltage(v)
-                robot.hub.display.number(vPct)
+    while True:
+        v = robot.hub.battery.voltage()
+        vPct = RescaleBatteryVoltage(v)
+        robot.hub.display.number(vPct)
+
 
 
 # Don't modify the code below
