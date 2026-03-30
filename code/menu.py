@@ -6,20 +6,20 @@ from pybricks.tools import wait, StopWatch
 import celebrate
 
 
-import images, robot, cleanwheels, battery
+import images, robot, cleanwheels, battery, straightdemo
 
 def menu(programs):
     menu2(programs)
 
 def menu2(programs: dict[int, object]):
-    print("Creating hub")
     Robot = robot.Robot()
     hub = Robot.hub
 
     utilities = {
         0: cleanwheels.Run,
         1: battery.Run,
-        2: celebrate.Run
+        2: celebrate.Run,
+        3: straightdemo.Run,
     }
 
     # Since we use the center button, this sets the combo of the center and bluetooth button to stop the program
@@ -29,6 +29,9 @@ def menu2(programs: dict[int, object]):
     selection = 0
     option = 0
     mode = 0
+
+    print("M.A.R.C.U.S. Ready")
+
     while True:
         while mode == 0:
             
@@ -83,7 +86,12 @@ def menu2(programs: dict[int, object]):
                 Robot.right_attachment.stop()
                 selection += 1
                 if selection > len(programs) - 1 and not stopped:
-                    celebrate.Run(Robot)
+                    try:
+                        hub.system.set_stop_button([Button.CENTER])
+                        celebrate.Run(Robot)
+                    except SystemExit:
+                        wait(500)
+                    hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
             hub.display.number(selection)
             hub.light.on(Color.GREEN)
             if Button.BLUETOOTH in pressed:
@@ -126,6 +134,8 @@ def menu2(programs: dict[int, object]):
                 hub.display.icon(images.BATTERY)
             if option == 2:
                 hub.display.icon(images.STAR)
+            if option == 3:
+                hub.display.icon(images.UP_ARROW)
             if Button.BLUETOOTH in pressed:
                 mode = 0
                 wait(500)
