@@ -35,7 +35,7 @@ def run_program(program, Robot, buttons):
 def menu2(programs: list[object]):
     Robot = robot.Robot()
     hub = Robot.hub
-    buttons = ButtonInput(hub)
+    buttons = ButtonInput(hub, Robot.force_sensor)
 
     utilities = [
         (cleanwheels_Run, CLEAN_WHEELS_1),
