@@ -75,7 +75,7 @@ def menu2(programs: list[object]):
                     # Set the stop button to just the center button, so we can use it to stop a running sub-program
                     # We'll catch the SystemExit exception that is raised
                     hub.system.set_stop_button([Button.CENTER])
-                    programs[selection](Robot.drive_base, Robot.left_attachment, Robot.right_attachment)
+                    programs[selection](Robot.drive_base, Robot.left_attachment, Robot.right_attachment, Robot.hub)
                 except SystemExit:
                     Robot.drive_base.stop()
                     Robot.left_attachment.stop()
