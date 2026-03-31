@@ -14,6 +14,24 @@ import robot
 def menu(programs):
     menu2(programs)
 
+def run_program(program, Robot, buttons):
+    """Run a program with proper stop-button handling and motor cleanup.
+    Returns True if the program was stopped by the user."""
+    stopped = False
+    buttons.wait_until_released(Button.CENTER)
+    try:
+        Robot.hub.system.set_stop_button([Button.CENTER])
+        program(Robot.drive_base, Robot.left_attachment, Robot.right_attachment, Robot.hub)
+    except SystemExit:
+        stopped = True
+        buttons.wait_until_released(Button.CENTER)
+    Robot.drive_base.stop()
+    Robot.left_attachment.stop()
+    Robot.right_attachment.stop()
+    Robot.hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
+    Robot.hub.speaker.beep(1,1)
+    return stopped
+
 def menu2(programs: list[object]):
     Robot = robot.Robot()
     hub = Robot.hub
@@ -69,33 +87,10 @@ def menu2(programs: list[object]):
                 # should keep results consistent
                 Robot.drive_base.use_gyro(False)
 
-                buttons.wait_until_released(Button.CENTER)
-                
-                try:
-                    # Set the stop button to just the center button, so we can use it to stop a running sub-program
-                    # We'll catch the SystemExit exception that is raised
-                    hub.system.set_stop_button([Button.CENTER])
-                    programs[selection](Robot.drive_base, Robot.left_attachment, Robot.right_attachment, Robot.hub)
-                except SystemExit:
-                    Robot.drive_base.stop()
-                    Robot.left_attachment.stop()
-                    Robot.right_attachment.stop()
-                    buttons.wait_until_released(Button.CENTER)
-                    stopped = True
-                hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
-                Robot.drive_base.stop()
-                Robot.left_attachment.stop()
-                Robot.right_attachment.stop()
+                stopped = run_program(programs[selection], Robot, buttons)
                 selection += 1
                 if selection > len(programs) - 1 and not stopped:
-                    try:
-                        hub.system.set_stop_button([Button.CENTER])
-                        celebrate_Run(Robot)
-                    except SystemExit:
-                        pass
-                    hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
-                    Robot.hub.speaker.beep(1,1)
-                    buttons.wait_until_released(Button.CENTER)
+                    run_program(celebrate_Run, Robot, buttons)
             hub.display.number(selection)
             hub.light.on(Color.GREEN)
             if buttons.just_pressed(Button.BLUETOOTH):
@@ -113,22 +108,7 @@ def menu2(programs: list[object]):
                 option = 0
             if buttons.just_pressed(Button.CENTER):
                 hub.light.on(Color.BLUE)
-                buttons.wait_until_released(Button.CENTER)
-                try:
-                    # Set the stop button to just the center button, so we can use it to stop a running sub-program
-                    # We'll catch the SystemExit exception that is raised
-                    hub.system.set_stop_button([Button.CENTER])
-                    utilities[option][0](Robot)
-                except SystemExit:
-                    Robot.drive_base.stop()
-                    Robot.left_attachment.stop()
-                    Robot.right_attachment.stop()
-                    buttons.wait_until_released(Button.CENTER)
-            hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
-            Robot.drive_base.stop()
-            Robot.left_attachment.stop()
-            Robot.right_attachment.stop()
-            Robot.hub.speaker.beep(1,1)
+                run_program(utilities[option][0], Robot, buttons)
             hub.display.icon(utilities[option][1])
             if buttons.just_pressed(Button.BLUETOOTH):
                 mode = 0

@@ -1,16 +1,19 @@
 from pybricks.tools import Matrix
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor
+from pybricks.robotics import DriveBase
 from pybricks.parameters import Color, Button
 from pybricks.tools import wait
 from marcus.images import STAR, STAR_2
 import robot
 
 
-def Run(robot: robot.Robot):
-    robot.hub.display.animate([STAR, STAR_2], 200)
-    robot.hub.light.animate(
+def Run(drive_base: DriveBase, left_attachment: Motor, right_attachment: Motor, hub: PrimeHub):
+    hub.display.animate([STAR, STAR_2], 200)
+    hub.light.animate(
         (Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN), 200
     )
-    robot.hub.speaker.play_notes(
+    hub.speaker.play_notes(
         [
             "G4/4",
             "G4/4",
@@ -39,7 +42,7 @@ def Run(robot: robot.Robot):
         ],
         160,
     )
-    robot.hub.light.on(Color.MAGENTA)
+    hub.light.on(Color.MAGENTA)
 
     while(True):
         pass
@@ -49,4 +52,4 @@ def Run(robot: robot.Robot):
 # It runs the Run method if this file is run directly (not from the master program)
 if __name__ == "__main__":
     bot = robot.Robot()
-    Run(bot)
+    Run(bot.drive_base, bot.left_attachment, bot.right_attachment, bot.hub)

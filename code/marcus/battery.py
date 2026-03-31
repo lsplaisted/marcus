@@ -1,4 +1,7 @@
 from pybricks.tools import Matrix
+from pybricks.hubs import PrimeHub
+from pybricks.pupdevices import Motor
+from pybricks.robotics import DriveBase
 import robot
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
 from pybricks.tools import wait
@@ -25,11 +28,11 @@ def RescaleBatteryVoltage(volts):
     return Rescale(volts, 7000, 8000, 0, 100)
 
 
-def Run(robot: robot.Robot):
+def Run(drive_base: DriveBase, left_attachment: Motor, right_attachment: Motor, hub: PrimeHub):
     while True:
-        v = robot.hub.battery.voltage()
+        v = hub.battery.voltage()
         vPct = RescaleBatteryVoltage(v)
-        robot.hub.display.number(vPct)
+        hub.display.number(vPct)
 
 
 
@@ -37,4 +40,4 @@ def Run(robot: robot.Robot):
 # It runs the Run method if this file is run directly (not from the master program)
 if __name__ == "__main__":
     bot = robot.Robot()
-    Run(bot)
+    Run(bot.drive_base, bot.left_attachment, bot.right_attachment, bot.hub)
