@@ -1,14 +1,14 @@
 from pybricks.parameters import Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
-import images
+from marcus.images import CLEAN_WHEELS_1, CLEAN_WHEELS_2
 import robot
 
 def Run(robot: robot.Robot):
     robot.hub.display.animate(
                 [
-                    images.CLEAN_WHEELS_1,
-                    images.CLEAN_WHEELS_2
+                    CLEAN_WHEELS_1,
+                    CLEAN_WHEELS_2
                 ],
                 300,
             )

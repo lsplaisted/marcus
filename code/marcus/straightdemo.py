@@ -1,7 +1,6 @@
 from pybricks.parameters import Direction, Port, Stop
 from pybricks.pupdevices import Motor
 from pybricks.robotics import DriveBase
-import images
 import robot
 
 def Run(robot: robot.Robot):

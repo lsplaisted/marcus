@@ -1,6 +1,5 @@
 from pybricks.tools import Matrix
 import robot
-import images
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
 from pybricks.tools import wait
 

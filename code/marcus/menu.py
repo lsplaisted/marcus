@@ -3,10 +3,16 @@ from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSenso
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait, StopWatch
-import celebrate
-
-
-import images, robot, cleanwheels, battery, straightdemo
+from marcus.celebrate import Run as celebrate_Run
+from marcus.cleanwheels import Run as cleanwheels_Run
+from marcus.battery import Run as battery_Run
+from marcus.straightdemo import Run as straightdemo_Run
+from marcus.images import (
+    RUNNING_1, RUNNING_2, RUNNING_3, RUNNING_4,
+    RUNNING_5, RUNNING_6, RUNNING_7,
+    CLEAN_WHEELS_1, BATTERY, STAR, UP_ARROW,
+)
+import robot
 
 def menu(programs):
     menu2(programs)
@@ -16,10 +22,10 @@ def menu2(programs: dict[int, object]):
     hub = Robot.hub
 
     utilities = {
-        0: cleanwheels.Run,
-        1: battery.Run,
-        2: celebrate.Run,
-        3: straightdemo.Run,
+        0: cleanwheels_Run,
+        1: battery_Run,
+        2: celebrate_Run,
+        3: straightdemo_Run,
     }
 
     # Since we use the center button, this sets the combo of the center and bluetooth button to stop the program
@@ -51,13 +57,13 @@ def menu2(programs: dict[int, object]):
                 hub.light.on(Color.MAGENTA)
                 hub.display.animate(
                     [
-                        images.RUNNING_1,
-                        images.RUNNING_2,
-                        images.RUNNING_3,
-                        images.RUNNING_4,
-                        images.RUNNING_5,
-                        images.RUNNING_6,
-                        images.RUNNING_7,
+                        RUNNING_1,
+                        RUNNING_2,
+                        RUNNING_3,
+                        RUNNING_4,
+                        RUNNING_5,
+                        RUNNING_6,
+                        RUNNING_7,
                     ],
                     300,
                 )
@@ -88,7 +94,7 @@ def menu2(programs: dict[int, object]):
                 if selection > len(programs) - 1 and not stopped:
                     try:
                         hub.system.set_stop_button([Button.CENTER])
-                        celebrate.Run(Robot)
+                        celebrate_Run(Robot)
                     except SystemExit:
                         wait(500)
                     hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
@@ -129,13 +135,13 @@ def menu2(programs: dict[int, object]):
             Robot.right_attachment.stop()
             Robot.hub.speaker.beep(1,1)
             if option == 0:
-                hub.display.icon(images.CLEAN_WHEELS_1)
+                hub.display.icon(CLEAN_WHEELS_1)
             if option == 1:
-                hub.display.icon(images.BATTERY)
+                hub.display.icon(BATTERY)
             if option == 2:
-                hub.display.icon(images.STAR)
+                hub.display.icon(STAR)
             if option == 3:
-                hub.display.icon(images.UP_ARROW)
+                hub.display.icon(UP_ARROW)
             if Button.BLUETOOTH in pressed:
                 mode = 0
                 wait(500)

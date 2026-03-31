@@ -1,4 +1,4 @@
-import menu
+from marcus.menu import menu
 
 import program1, program2
 
@@ -7,6 +7,6 @@ programs = {
     1: program2.Run,
 }
 
-menu.menu(programs)
+menu(programs)
 
 print("done")

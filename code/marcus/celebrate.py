@@ -1,12 +1,12 @@
 from pybricks.tools import Matrix
 from pybricks.parameters import Color, Button
 from pybricks.tools import wait
-import images
+from marcus.images import STAR, STAR_2
 import robot
 
 
 def Run(robot: robot.Robot):
-    robot.hub.display.animate([images.STAR, images.STAR_2], 200)
+    robot.hub.display.animate([STAR, STAR_2], 200)
     robot.hub.light.animate(
         (Color.RED, Color.YELLOW, Color.GREEN, Color.CYAN), 200
     )
