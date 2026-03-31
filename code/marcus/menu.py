@@ -97,6 +97,7 @@ def menu2(programs: list[object]):
                 mode = 1
 
         while mode == 1:
+            hub.light.on(Color.BLUE)
             buttons.update()
             if buttons.just_pressed(Button.RIGHT):
                 option += 1
@@ -107,7 +108,6 @@ def menu2(programs: list[object]):
             if option > len(utilities) - 1:
                 option = 0
             if buttons.just_pressed(Button.CENTER):
-                hub.light.on(Color.BLUE)
                 run_program(utilities[option][0], Robot, buttons)
             hub.display.icon(utilities[option][1])
             if buttons.just_pressed(Button.BLUETOOTH):
