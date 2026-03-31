@@ -2,10 +2,10 @@ from marcus.menu import menu
 
 import program1, program2
 
-programs = {
-    0: program1.Run,
-    1: program2.Run,
-}
+programs = [
+    program1.Run,
+    program2.Run,
+]
 
 menu(programs)
 

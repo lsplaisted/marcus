@@ -1,9 +1,6 @@
 # M.A.R.C.U.S.
 
 Multiple Amazing Robot Code Usage Selector
-Making All Robots Capable of Usage Selection
-Menu Activated Robot Code Usage System
-
 
 # How to set up
 
