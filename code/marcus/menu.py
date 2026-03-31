@@ -3,6 +3,7 @@ from pybricks.pupdevices import Motor, ColorSensor, UltrasonicSensor, ForceSenso
 from pybricks.parameters import Button, Color, Direction, Port, Side, Stop, Axis
 from pybricks.robotics import DriveBase
 from pybricks.tools import wait, StopWatch
+from marcus.buttons import ButtonInput
 from marcus.celebrate import Run as celebrate_Run
 from marcus.cleanwheels import Run as cleanwheels_Run
 from marcus.battery import Run as battery_Run
@@ -16,6 +17,7 @@ def menu(programs):
 def menu2(programs: list[object]):
     Robot = robot.Robot()
     hub = Robot.hub
+    buttons = ButtonInput(hub)
 
     utilities = [
         (cleanwheels_Run, CLEAN_WHEELS_1),
@@ -38,18 +40,16 @@ def menu2(programs: list[object]):
         while mode == 0:
             
             stopped = False
-            pressed = hub.buttons.pressed()
-            if Button.RIGHT in pressed:
+            buttons.update()
+            if buttons.just_pressed(Button.RIGHT):
                 selection += 1
-                wait(200)
-            if Button.LEFT in pressed:
+            if buttons.just_pressed(Button.LEFT):
                 selection -= 1
-                wait(200)
             if (selection < 0):
                 selection = len(programs) - 1
             if selection > len(programs) - 1:
                 selection = 0
-            if Button.CENTER in pressed:
+            if buttons.just_pressed(Button.CENTER):
                 hub.light.on(Color.MAGENTA)
                 hub.display.animate(
                     [
@@ -69,7 +69,7 @@ def menu2(programs: list[object]):
                 # should keep results consistent
                 Robot.drive_base.use_gyro(False)
 
-                wait(500)
+                buttons.wait_until_released(Button.CENTER)
                 
                 try:
                     # Set the stop button to just the center button, so we can use it to stop a running sub-program
@@ -80,7 +80,7 @@ def menu2(programs: list[object]):
                     Robot.drive_base.stop()
                     Robot.left_attachment.stop()
                     Robot.right_attachment.stop()
-                    wait(500)
+                    buttons.wait_until_released(Button.CENTER)
                     stopped = True
                 hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
                 Robot.drive_base.stop()
@@ -92,29 +92,28 @@ def menu2(programs: list[object]):
                         hub.system.set_stop_button([Button.CENTER])
                         celebrate_Run(Robot)
                     except SystemExit:
-                        wait(500)
+                        pass
                     hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
+                    Robot.hub.speaker.beep(1,1)
+                    buttons.wait_until_released(Button.CENTER)
             hub.display.number(selection)
             hub.light.on(Color.GREEN)
-            if Button.BLUETOOTH in pressed:
+            if buttons.just_pressed(Button.BLUETOOTH):
                 mode = 1
-                wait(500)
 
         while mode == 1:
-            pressed = hub.buttons.pressed()
-            if Button.RIGHT in pressed:
+            buttons.update()
+            if buttons.just_pressed(Button.RIGHT):
                 option += 1
-                wait(200)
-            if Button.LEFT in pressed:
+            if buttons.just_pressed(Button.LEFT):
                 option -= 1
-                wait(200)
             if (option < 0):
                 option = len(utilities) - 1
             if option > len(utilities) - 1:
                 option = 0
-            if Button.CENTER in pressed:
+            if buttons.just_pressed(Button.CENTER):
                 hub.light.on(Color.BLUE)
-                wait(500)
+                buttons.wait_until_released(Button.CENTER)
                 try:
                     # Set the stop button to just the center button, so we can use it to stop a running sub-program
                     # We'll catch the SystemExit exception that is raised
@@ -124,13 +123,12 @@ def menu2(programs: list[object]):
                     Robot.drive_base.stop()
                     Robot.left_attachment.stop()
                     Robot.right_attachment.stop()
-                    wait(1000)
+                    buttons.wait_until_released(Button.CENTER)
             hub.system.set_stop_button([Button.CENTER, Button.BLUETOOTH])
             Robot.drive_base.stop()
             Robot.left_attachment.stop()
             Robot.right_attachment.stop()
             Robot.hub.speaker.beep(1,1)
             hub.display.icon(utilities[option][1])
-            if Button.BLUETOOTH in pressed:
+            if buttons.just_pressed(Button.BLUETOOTH):
                 mode = 0
-                wait(500)
